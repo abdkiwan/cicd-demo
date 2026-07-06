@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  merge_group:
+
+jobs:
+  quality-gate:
+    name: quality-gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Check formatting
+        run: ruff format --check app tests
+
+      - name: Lint code
+        run: ruff check app tests
+
+      - name: Run tests with coverage
+        run: pytest --cov=app --cov-fail-under=80
+
+      - name: Check Docker image builds
+        run: docker build -t cicd-demo-api:test .
