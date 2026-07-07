@@ -10,8 +10,8 @@ on:
   merge_group:
 
 jobs:
-  quality-gate:
-    name: quality-gate
+  lint:
+    name: lint
     runs-on: ubuntu-latest
 
     steps:
@@ -22,6 +22,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
 
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -32,8 +33,33 @@ jobs:
       - name: Lint code
         run: ruff check app tests
 
+  test:
+    name: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
       - name: Run tests with coverage
         run: pytest --cov=app --cov-fail-under=80
+
+  docker:
+    name: docker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Check Docker image builds
         run: docker build -t cicd-demo-api:test .
