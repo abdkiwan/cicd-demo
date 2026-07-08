@@ -4,3 +4,9 @@ __pycache__/
 .ruff_cache/
 .env
 .venv/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+
