@@ -8,7 +8,7 @@ app = FastAPI(title=APP_NAME)
 @app.get("/")
 def root():
     return {
-        "message": f"Hello from {APP_NAME} - deployed with CI/CD.",
+        "message": f"Hello from {APP_NAME} - live from the CI/CD sessio.",
         "environment": APP_ENV,
     }
 
