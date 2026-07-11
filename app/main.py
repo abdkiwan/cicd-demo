@@ -2,8 +2,6 @@ from fastapi import FastAPI
 
 from app.settings import APP_ENV, APP_NAME, APP_VERSION
 
-import json
-
 app = FastAPI(title=APP_NAME)
 
 
